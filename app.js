@@ -66,6 +66,43 @@ app.route("/articles")
     }
 );
 
+app.route("/articles/:articleTitle")
+
+.get(
+    function (req,res){
+        Article.findOne({title: req.params.articleTitle},function (err,foundArticle){
+            if(!err){
+                console.log(foundArticle);
+            }
+            else{
+                res.send(err);
+            }
+        })
+    }
+)
+.put(
+    function (req,res){
+        Article.replaceOne(
+            {
+                title: req.params.articleTitle
+            },
+            {
+                title: req.body.title,
+                content: req.body.content
+            },
+
+            function (err) {
+                if(!err){
+                    console.log("Updated successfully!")
+                }
+                else{
+                    console.log(err)
+                }
+            }
+        )
+    }
+)
+
 app.listen(3000,function(){
     console.log("This server is active on port 3000.");
 })
